@@ -57,18 +57,21 @@ func TestSingly_InsertHead(t *testing.T) {
 		list.InsertHead(8)
 		list.InsertHead(12)
 
-		want := linkedlistTest{
-			12,
-			5,
+		want := []int{12, 8, 36, 5, 3}
+		got := []int{}
+		cur := list.Head
+		got = append(got, cur.Data)
+
+		for cur.Next != nil {
+			cur = cur.Next
+			got = append(got, cur.Data)
 		}
 
-		if list.Head.Data != want.data {
-			t.Errorf("got: %v, want: %v", list.Head.Data, want.data)
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("got: %v, want: %v", got, want)
+
 		}
 
-		if list.Len() != want.length {
-			t.Errorf("got: %v, want: %v", list.Len(), want.length)
-		}
 	})
 }
 
@@ -157,6 +160,10 @@ func TestSingly_Insert(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
+		if list.Head.Data != want.data {
+
+			t.Errorf("got: %v, want: %v", list.Head.Data, want.data)
+		}
 		if list.Len() != want.length {
 			t.Errorf("got: %v, want: %v", list.Len(), want.length)
 		}
@@ -169,37 +176,72 @@ func TestSingly_Insert(t *testing.T) {
 
 	t.Run("test with one elements", func(t *testing.T) {
 		list := linkedlist.NewSingly[int]()
-		list.InsertHead(3)
-		list.Insert(5, 1)
-
 		want := linkedlistTest{
-			5,
+			4,
+			1,
+		}
+
+		err := list.Insert(5, -1)
+		if err != linkedlist.ErrPositionOutOfRange {
+			t.Errorf("got error: %v, want error: %v", err, linkedlist.ErrPositionOutOfRange)
+		}
+
+		err = list.Insert(4, 0)
+		if err != nil {
+			t.Error(err)
+		}
+		if list.Head.Data != want.data {
+
+			t.Errorf("got: %v, want: %v", list.Head.Data, want.data)
+		}
+		if list.Len() != want.length {
+			t.Errorf("got: %v, want: %v", list.Len(), want.length)
+		}
+
+		want = linkedlistTest{
+			6,
 			2,
 		}
 
-		cur := list.Head
-		for cur.Next != nil {
-			cur = cur.Next
+		err = list.Insert(6, 1)
+		if err != nil {
+			t.Error(err)
 		}
+		if list.Head.Next.Data != want.data {
 
-		if cur.Data != want.data {
-			t.Errorf("got: %v, want: %v", cur.Data, want.data)
+			t.Errorf("got: %v, want: %v", list.Head.Data, want.data)
 		}
-
 		if list.Len() != want.length {
 			t.Errorf("got: %v, want: %v", list.Len(), want.length)
+		}
+
+		err = list.Insert(12, 4)
+		if err != linkedlist.ErrPositionOutOfRange {
+			t.Errorf("got error: %v, want error: %v", err, linkedlist.ErrPositionOutOfRange)
 		}
 	})
 
 	t.Run("test with multiple elements", func(t *testing.T) {
+
 		list := linkedlist.NewSingly[int]()
+
+		err := list.Insert(5, -1)
+		if err != linkedlist.ErrPositionOutOfRange {
+			t.Errorf("got error: %v, want error: %v", err, linkedlist.ErrPositionOutOfRange)
+		}
+
 		list.InsertHead(3)
 		list.InsertTail(5)
 		list.InsertTail(36)
 		list.InsertHead(8)
-		list.InsertTail(12)
 
-		want := []int{8, 3, 5, 36, 12}
+		list.InsertTail(12)
+		err = list.Insert(4, 2)
+		if err != nil {
+			t.Error(err)
+		}
+
+		want := []int{8, 3, 4, 5, 36, 12}
 		got := []int{}
 		cur := list.Head
 		got = append(got, cur.Data)
@@ -212,6 +254,14 @@ func TestSingly_Insert(t *testing.T) {
 		if !reflect.DeepEqual(got, want) {
 			t.Errorf("got: %v, want: %v", got, want)
 
+		}
+		if list.Len() != 6 {
+			t.Errorf("got: %v, want: %v", list.Len(), 6)
+		}
+
+		err = list.Insert(15, 8)
+		if err != linkedlist.ErrPositionOutOfRange {
+			t.Errorf("got error: %v, want error: %v", err, linkedlist.ErrPositionOutOfRange)
 		}
 	})
 }
