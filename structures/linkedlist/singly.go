@@ -1,6 +1,8 @@
 package linkedlist
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type Singly[T comparable] struct {
 	Head   *Node[T]
@@ -32,8 +34,8 @@ func (s *Singly[T]) InsertTail(data T) {
 	s.length++
 }
 
-func (s *Singly[T]) Insert(data T, postion int) error {
-	if postion < 0 || postion > s.length {
+func (s *Singly[T]) Insert(data T, position int) error {
+	if position < 0 || position > s.length {
 		return ErrPositionOutOfRange
 	}
 
@@ -43,7 +45,7 @@ func (s *Singly[T]) Insert(data T, postion int) error {
 	}
 
 	cur := s.Head
-	for i := 0; cur != nil && i < postion-1; i++ {
+	for i := 0; cur != nil && i < position-1; i++ {
 		cur = cur.Next
 	}
 
@@ -51,6 +53,57 @@ func (s *Singly[T]) Insert(data T, postion int) error {
 	nn.Next = cur.Next
 	cur.Next = nn
 	s.length++
+	return nil
+}
+
+func (s *Singly[T]) RemoveHead() error {
+	if s.isEmpty() {
+		return ErrListEmpty
+	}
+
+	cur := s.Head
+	s.Head = cur.Next
+	s.length--
+	return nil
+}
+
+func (s *Singly[T]) RemoveTail() error {
+	if s.isEmpty() {
+		return ErrListEmpty
+	}
+
+	if s.Head.Next == nil {
+		return s.RemoveHead()
+	}
+
+	cur := s.Head
+	for cur.Next.Next != nil {
+		cur = cur.Next
+	}
+	cur.Next = nil
+	s.length--
+	return nil
+}
+
+func (s *Singly[T]) Remove(position int) error {
+	if position < 0 || position > s.length {
+		return ErrPositionOutOfRange
+	}
+
+	if s.isEmpty() {
+		return ErrListEmpty
+	}
+
+	if position == 0 {
+		return s.RemoveHead()
+	}
+
+	cur := s.Head
+	for i := 0; cur != nil && i < position-1; i++ {
+		cur = cur.Next
+	}
+	cur.Next = cur.Next.Next
+	s.length--
 
 	return nil
 }
