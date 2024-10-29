@@ -342,23 +342,25 @@ func TestSingly_Remove(t *testing.T) {
 			t.Errorf("got error: %v, want error: %v", err, linkedlist.ErrPositionOutOfRange)
 		}
 
-		list.InsertTail(5)
-		err = list.RemoveTail()
-		if err != nil {
-			t.Error(err)
+		err = list.Remove(0)
+		if err != linkedlist.ErrListEmpty {
+			t.Errorf("got error: %v, want error: %v", err, linkedlist.ErrListEmpty)
 		}
 
 		list.InsertHead(3)
 		list.InsertTail(5)
 		list.InsertTail(36)
 		list.InsertHead(8)
+		list.InsertHead(4)
+		list.InsertHead(12)
+		list.InsertHead(96)
 
-		err = list.RemoveTail()
+		err = list.Remove(3)
 		if err != nil {
 			t.Error(err)
 		}
 
-		want := []int{8, 3, 5}
+		want := []int{96, 12, 4, 3, 5, 36}
 		got := []int{}
 		cur := list.Head
 		got = append(got, cur.Data)
@@ -372,8 +374,13 @@ func TestSingly_Remove(t *testing.T) {
 			t.Errorf("got: %v, want: %v", got, want)
 
 		}
-		if list.Len() != 3 {
-			t.Errorf("got: %v, want: %v", list.Len(), 3)
+		if list.Len() != 6 {
+			t.Errorf("got: %v, want: %v", list.Len(), 6)
+		}
+
+		err = list.Remove(7)
+		if err != linkedlist.ErrPositionOutOfRange {
+			t.Errorf("got error: %v, want error: %v", err, linkedlist.ErrPositionOutOfRange)
 		}
 	})
 }
