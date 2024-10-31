@@ -35,25 +35,23 @@ func (s *Singly[T]) InsertTail(data T) {
 }
 
 func (s *Singly[T]) Insert(data T, position int) error {
-	if position < 0 || position > s.length {
+	switch {
+	case position < 0 || position > s.length:
 		return ErrPositionOutOfRange
-	}
-
-	if s.isEmpty() {
+	case s.isEmpty():
 		s.InsertHead(data)
 		return nil
+	default:
+		cur := s.Head
+		for i := 0; cur != nil && i < position-1; i++ {
+			cur = cur.Next
+		}
+		nn := NewNode(data)
+		nn.Next = cur.Next
+		cur.Next = nn
+		s.length++
+		return nil
 	}
-
-	cur := s.Head
-	for i := 0; cur != nil && i < position-1; i++ {
-		cur = cur.Next
-	}
-
-	nn := NewNode(data)
-	nn.Next = cur.Next
-	cur.Next = nn
-	s.length++
-	return nil
 }
 
 func (s *Singly[T]) RemoveHead() error {
@@ -68,44 +66,39 @@ func (s *Singly[T]) RemoveHead() error {
 }
 
 func (s *Singly[T]) RemoveTail() error {
-	if s.isEmpty() {
+	switch {
+	case s.isEmpty():
 		return ErrListEmpty
-	}
-
-	if s.Head.Next == nil {
+	case s.Head.Next == nil:
 		return s.RemoveHead()
+	default:
+		cur := s.Head
+		for cur.Next.Next != nil {
+			cur = cur.Next
+		}
+		cur.Next = nil
+		s.length--
+		return nil
 	}
-
-	cur := s.Head
-	for cur.Next.Next != nil {
-		cur = cur.Next
-	}
-	cur.Next = nil
-	s.length--
-	return nil
 }
 
 func (s *Singly[T]) Remove(position int) error {
-	if position < 0 || position > s.length {
+	switch {
+	case position < 0 || position > s.length:
 		return ErrPositionOutOfRange
-	}
-
-	if s.isEmpty() {
+	case s.isEmpty():
 		return ErrListEmpty
-	}
-
-	if position == 0 {
+	case position == 0:
 		return s.RemoveHead()
+	default:
+		cur := s.Head
+		for i := 0; cur != nil && i < position-1; i++ {
+			cur = cur.Next
+		}
+		cur.Next = cur.Next.Next
+		s.length--
+		return nil
 	}
-
-	cur := s.Head
-	for i := 0; cur != nil && i < position-1; i++ {
-		cur = cur.Next
-	}
-	cur.Next = cur.Next.Next
-	s.length--
-
-	return nil
 }
 
 func (s *Singly[T]) Transverse() {
