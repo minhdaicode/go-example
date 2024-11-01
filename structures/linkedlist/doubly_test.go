@@ -6,17 +6,17 @@ import (
 	"testing"
 )
 
-type linkedlistTest struct {
+type doublyLinkedListTest struct {
 	data   int
 	length int
 }
 
-func TestSingly_InsertHead(t *testing.T) {
+func TestDoubly_InsertHead(t *testing.T) {
 	t.Run("test with empty list", func(t *testing.T) {
-		list := linkedlist.NewSingly[int]()
+		list := linkedlist.NewDoubly[int]()
 		list.InsertHead(3)
 
-		want := linkedlistTest{data: 3, length: 1}
+		want := doublyLinkedListTest{data: 3, length: 1}
 
 		if list.Head.Data != want.data {
 			t.Errorf("got: %v, want: %v", list.Head.Data, want.data)
@@ -28,11 +28,11 @@ func TestSingly_InsertHead(t *testing.T) {
 	})
 
 	t.Run("test with one elements", func(t *testing.T) {
-		list := linkedlist.NewSingly[int]()
+		list := linkedlist.NewDoubly[int]()
 		list.InsertHead(3)
 		list.InsertHead(5)
 
-		want := linkedlistTest{data: 5, length: 2}
+		want := doublyLinkedListTest{data: 5, length: 2}
 
 		if list.Head.Data != want.data {
 			t.Errorf("got: %v, want: %v", list.Head.Data, want.data)
@@ -44,7 +44,7 @@ func TestSingly_InsertHead(t *testing.T) {
 	})
 
 	t.Run("test with multiple elements", func(t *testing.T) {
-		list := linkedlist.NewSingly[int]()
+		list := linkedlist.NewDoubly[int]()
 		list.InsertHead(3)
 		list.InsertHead(5)
 		list.InsertHead(36)
@@ -68,12 +68,12 @@ func TestSingly_InsertHead(t *testing.T) {
 	})
 }
 
-func TestSingly_InsertTail(t *testing.T) {
+func TestDoubly_InsertTail(t *testing.T) {
 	t.Run("test with empty list", func(t *testing.T) {
-		list := linkedlist.NewSingly[int]()
+		list := linkedlist.NewDoubly[int]()
 		list.InsertTail(3)
 
-		want := linkedlistTest{data: 3, length: 1}
+		want := doublyLinkedListTest{data: 3, length: 1}
 
 		if list.Head.Data != want.data {
 			t.Errorf("got: %v, want: %v", list.Head.Data, want.data)
@@ -85,11 +85,11 @@ func TestSingly_InsertTail(t *testing.T) {
 	})
 
 	t.Run("test with one elements", func(t *testing.T) {
-		list := linkedlist.NewSingly[int]()
+		list := linkedlist.NewDoubly[int]()
 		list.InsertHead(3)
 		list.InsertTail(5)
 
-		want := linkedlistTest{data: 5, length: 2}
+		want := doublyLinkedListTest{data: 5, length: 2}
 
 		cur := list.Head
 		for cur.Next != nil {
@@ -106,7 +106,7 @@ func TestSingly_InsertTail(t *testing.T) {
 	})
 
 	t.Run("test with multiple elements", func(t *testing.T) {
-		list := linkedlist.NewSingly[int]()
+		list := linkedlist.NewDoubly[int]()
 		list.InsertHead(3)
 		list.InsertTail(5)
 		list.InsertTail(36)
@@ -129,10 +129,10 @@ func TestSingly_InsertTail(t *testing.T) {
 	})
 }
 
-func TestSingly_Insert(t *testing.T) {
+func TestDoubly_Insert(t *testing.T) {
 	t.Run("test with empty list", func(t *testing.T) {
-		list := linkedlist.NewSingly[int]()
-		want := linkedlistTest{data: 3, length: 1}
+		list := linkedlist.NewDoubly[int]()
+		want := doublyLinkedListTest{data: 3, length: 1}
 
 		err := list.Insert(5, -1)
 		if err != linkedlist.ErrPositionOutOfRange {
@@ -158,8 +158,8 @@ func TestSingly_Insert(t *testing.T) {
 	})
 
 	t.Run("test with one elements", func(t *testing.T) {
-		list := linkedlist.NewSingly[int]()
-		want := linkedlistTest{data: 4, length: 1}
+		list := linkedlist.NewDoubly[int]()
+		want := doublyLinkedListTest{data: 4, length: 1}
 
 		err := list.Insert(5, -1)
 		if err != linkedlist.ErrPositionOutOfRange {
@@ -178,7 +178,7 @@ func TestSingly_Insert(t *testing.T) {
 			t.Errorf("got: %v, want: %v", list.Len(), want.length)
 		}
 
-		want = linkedlistTest{data: 6, length: 2}
+		want = doublyLinkedListTest{data: 6, length: 2}
 
 		err = list.Insert(6, 1)
 		if err != nil {
@@ -200,7 +200,7 @@ func TestSingly_Insert(t *testing.T) {
 
 	t.Run("test with multiple elements", func(t *testing.T) {
 
-		list := linkedlist.NewSingly[int]()
+		list := linkedlist.NewDoubly[int]()
 
 		err := list.Insert(5, -1)
 		if err != linkedlist.ErrPositionOutOfRange {
@@ -243,9 +243,9 @@ func TestSingly_Insert(t *testing.T) {
 	})
 }
 
-func TestSingly_RemoveHead(t *testing.T) {
+func TestDoubly_RemoveHead(t *testing.T) {
 	t.Run("test remove head", func(t *testing.T) {
-		list := linkedlist.NewSingly[int]()
+		list := linkedlist.NewDoubly[int]()
 
 		err := list.RemoveHead()
 		if err != linkedlist.ErrListEmpty {
@@ -285,9 +285,9 @@ func TestSingly_RemoveHead(t *testing.T) {
 	})
 }
 
-func TestSingly_RemoveTail(t *testing.T) {
+func TestDoubly_RemoveTail(t *testing.T) {
 	t.Run("test remove tail", func(t *testing.T) {
-		list := linkedlist.NewSingly[int]()
+		list := linkedlist.NewDoubly[int]()
 
 		err := list.RemoveTail()
 		if err != linkedlist.ErrListEmpty {
@@ -333,9 +333,9 @@ func TestSingly_RemoveTail(t *testing.T) {
 	})
 }
 
-func TestSingly_Remove(t *testing.T) {
+func TestDoubly_Remove(t *testing.T) {
 	t.Run("test remove with position", func(t *testing.T) {
-		list := linkedlist.NewSingly[int]()
+		list := linkedlist.NewDoubly[int]()
 
 		err := list.Remove(-1)
 		if err != linkedlist.ErrPositionOutOfRange {

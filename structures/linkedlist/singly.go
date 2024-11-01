@@ -38,9 +38,11 @@ func (s *Singly[T]) Insert(data T, position int) error {
 	switch {
 	case position < 0 || position > s.length:
 		return ErrPositionOutOfRange
+
 	case s.isEmpty():
 		s.InsertHead(data)
 		return nil
+
 	default:
 		cur := s.Head
 		for i := 0; cur != nil && i < position-1; i++ {
@@ -69,8 +71,10 @@ func (s *Singly[T]) RemoveTail() error {
 	switch {
 	case s.isEmpty():
 		return ErrListEmpty
+
 	case s.Head.Next == nil:
 		return s.RemoveHead()
+
 	default:
 		cur := s.Head
 		for cur.Next.Next != nil {
@@ -86,10 +90,13 @@ func (s *Singly[T]) Remove(position int) error {
 	switch {
 	case position < 0 || position > s.length:
 		return ErrPositionOutOfRange
+
 	case s.isEmpty():
 		return ErrListEmpty
+
 	case position == 0:
 		return s.RemoveHead()
+
 	default:
 		cur := s.Head
 		for i := 0; cur != nil && i < position-1; i++ {
